@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Category theory study group - Chapter 10</title>
+
+    <!-- reveal js -->
+    <link rel="stylesheet" href="../../3rdParty/reveal.js/css/reveal.css">
+    
+    <link rel="stylesheet" href="../../3rdParty/reveal.js/css/theme/serif.css" id="theme">
+    
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" type="text/css" href="../../css/highlighting.css" />
+
+    <!--[if lt IE 9]>
+    <script src="../../lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+<style>
+  .reveal section {
+    font-size: 0.65em;
+  }
+  .reveal h1{
+    font-size: 1.5em;
+    margin-top: -30px;
+  }
+</style>
+<section id="natural-transformation" class="level1">
+<h1>Natural transformation</h1>
+<div style="width: 50%;float: left;">
+<ul>
+<li>Map functors to functors </br> <span class="math inline"><em>α</em><sub><em>a</em></sub> = <em>F</em><em>a</em> → <em>F</em><em>a</em></span></li>
+<li>Preserving <strong>natuarality condition</strong></br> <span class="math inline"><em>G</em>⨍ ∘ <em>α</em><sub><em>a</em></sub> = <em>α</em><sub><em>b</em></sub> ∘ <em>F</em>⨍</span></br> where</br> <span class="math inline">⨍ = <em>α</em> → <em>β</em></span></br> <span class="math inline"><em>F</em>⨍ = <em>F</em><em>a</em> → <em>F</em><em>b</em></span></br> <span class="math inline"><em>G</em>⨍ = <em>G</em><em>a</em> → <em>G</em><em>b</em></span></br> <span class="math inline"><em>α</em><sub><em>a</em></sub> = <em>F</em><em>a</em> → <em>G</em><em>b</em></span></br> <span class="math inline"><em>α</em><sub><em>b</em></sub> = <em>F</em><em>b</em> → <em>G</em><em>b</em></span></br></li>
+</ul>
+</div>
+<div style="width: 50%;float: right;">
+<p><img src="../../images/naturality.jpg" /></p>
+</div>
+</section>
+<section id="natural-transformation-1" class="level1">
+<h1>Natural transformation</h1>
+<div style="width: 50%;float: left;">
+<p>Its <strong>stringent</strong>.</p>
+<p>If <span class="math inline"><em>F</em>⨍</span> is invertible then <span class="math inline"><em>α</em><sub><em>b</em></sub></span> is determined in terms of <span class="math inline"><em>α</em><sub><em>a</em></sub></span> </br> <span class="math inline"><em>α</em><sub><em>b</em></sub> = (<em>G</em>⨍) ∘ <em>α</em><sub><em>a</em></sub> ∘ (<em>F</em>⨍)<sup> − 1</sup></span></p>
+</div>
+<div style="width: 50%;float: right;">
+<p><img src="../../images/transport.jpg" /></p>
+</div>
+</section>
+<section id="natural-transformation-2" class="level1">
+<h1>Natural transformation</h1>
+<div style="width: 50%;float: left;">
+<p><strong>Viewed componentwise</strong> could say:</p>
+<ul>
+<li>maps objects to morphisms</li>
+<li>maps morphisms to commuting squares</li>
+</ul>
+</div>
+<div style="width: 50%;float: right;">
+<p><img src="../../images/comuting-square.jpg" /></p>
+</div>
+</section>
+<section id="polymorphic-functions" class="level1">
+<h1>Polymorphic Functions</h1>
+<p>With <strong>parametric polymorphism</strong> as in Haskell any function between functors polymorphic in the element is a natural transformation.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode stretch haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">-- Always a natural transformation</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ot">alpha ::</span> <span class="dt">F</span> a <span class="ot">-&gt;</span> <span class="dt">G</span> a</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">-- naturality always holds</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">(fmap <span class="fu">@</span> <span class="dt">G</span>) f <span class="fu">.</span> alpha <span class="fu">=</span> alpha <span class="fu">.</span> (fmap <span class="fu">@</span> <span class="dt">F</span>) f</a></code></pre></div>
+<p>This is due to <em>“theoroms for free”</em></p>
+<p>Even functions to values can be seen as natural transformations</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode stretch haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">-- Normal version</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">length<span class="ot"> ::</span> [a] <span class="ot">-&gt;</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">-- Version recast as natural transformation</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="ot">lengthF ::</span> [a] <span class="ot">-&gt;</span> <span class="dt">Const</span> <span class="dt">Int</span> a</a></code></pre></div>
+</section>
+<section id="contravariant-functors" class="level1">
+<h1>Contravariant Functors</h1>
+<ul>
+<li>Equivalent to covariant functors in the opposite category</li>
+<li>Not natural transformations in <strong>Hask</strong></li>
+<li><p>They do satisfy the opposite naturality condition in <strong>Hask</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode stretch haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1">(contramap <span class="fu">@</span> <span class="dt">G</span>) <span class="fu">.</span> alpha <span class="fu">=</span> alpha <span class="fu">.</span> (contramap <span class="fu">@</span> <span class="dt">F</span>)</a></code></pre></div></li>
+</ul>
+</section>
+<section id="functor-category" class="level1">
+<h1>Functor Category</h1>
+<div style="width: 50%;float: left;">
+<ul>
+<li>Called <span class="math inline">[<em>C</em>, <em>D</em>]</span> or <span class="math inline"><em>D</em><sup><em>C</em></sup></span></li>
+<li>One category of functors for each pair of categories <span class="math inline"><em>C</em></span> an <span class="math inline"><em>D</em></span></li>
+<li>Objects are functors from <span class="math inline"><em>C</em></span> to <span class="math inline"><em>D</em></span></li>
+<li>Morphism are natural transformations between the functors</br> <span class="math inline"><em>α</em><sub><em>a</em></sub> = <em>F</em><em>a</em> → <em>G</em><em>a</em></span></br> <span class="math inline"><em>β</em><sub><em>a</em></sub> = <em>G</em><em>a</em> → <em>H</em><em>a</em></span></br> <span class="math inline"><em>β</em><sub><em>a</em></sub> ∘ <em>α</em><sub><em>a</em></sub> = <em>F</em><em>a</em> → <em>H</em><em>a</em></span></br> <span class="math inline">(<em>β</em> ⋅ <em>α</em>)<sub><em>a</em></sub> = <em>β</em><sub><em>a</em></sub> ∘ <em>α</em><sub><em>a</em></sub></span></br></li>
+</ul>
+</div>
+<div style="width: 50%;float: right;">
+<p><img src="../../images/vertical.jpg" /></p>
+</div>
+</section>
+<section id="functor-category-1" class="level1">
+<h1>Functor Category</h1>
+<div style="width: 50%;float: left;">
+<ul>
+<li>composition of natural transformation is associative because there component morphisms are asociative.</li>
+<li>Naturality holds for the composition</br> <span class="math inline"><em>H</em>⨍ ∘ (<em>β</em> ⋅ <em>α</em>)<sub><em>a</em></sub> = (<em>β</em> ⋅ <em>α</em>)<sub><em>b</em></sub> ∘ <em>F</em>⨍</span></br></li>
+<li>Indentity natural transformation <span class="math inline">1<sub><em>F</em></sub></span> whose components are the identity morphisms.</br> <span class="math inline"><em>i</em><em>d</em><sub><em>F</em><sub><em>a</em></sub></sub> = <em>F</em><em>a</em> → <em>F</em><em>a</em></span></li>
+</ul>
+</div>
+<div style="width: 50%;float: right;">
+<p><img src="../../images/verticalnaturality.jpg" /></p>
+</div>
+</section>
+<section id="vertical-composition" class="level1">
+<h1>Vertical composition</h1>
+<div style="width: 50%;float: left;">
+<ul>
+<li><span class="math inline"><em>β</em> ⋅ <em>α</em></span></li>
+<li>composition of natural transformation within the same functor category <span class="math inline"><em>D</em><sup><em>C</em></sup></span></li>
+</ul>
+</div>
+<div style="width: 50%;float: right;">
+<p><img src="../../images/vertical2.jpg" /></p>
+</div>
+</section>
+<section id="categories" class="level1">
+<h1>2-Categories</h1>
+<div style="width: 50%;float: left;">
+<ul>
+<li><strong>Cat</strong> category of <em>small</em> categories</li>
+<li>Hom-set in <strong>Cat</strong> set of functors</li>
+<li>Functors form a category</li>
+<li>In <strong>Cat</strong> as 2-category
+<ul>
+<li>Objects: <em>Small</em> categories</li>
+<li>1-morphisms: Functors between categories</li>
+<li>2-morphisms: Natural transformations between Functors (morphisms of morphisms)</li>
+</ul></li>
+<li>Hom-category <span class="math inline"><em>D</em><sup><em>C</em></sup></span> instead of Hom-set between categories <span class="math inline"><em>C</em></span> and <span class="math inline"><em>D</em></span>
+<ul>
+<li>Regular functor composition</br> <span class="math inline"><em>F</em></span> from <span class="math inline"><em>D</em><sup><em>C</em></sup></span></br> <span class="math inline"><em>G</em></span> from <span class="math inline"><em>E</em><sup><em>D</em></sup></span></br> <span class="math inline"><em>G</em> ∘ <em>F</em></span> in <span class="math inline"><em>E</em><sup><em>C</em></sup></span></li>
+<li>Also composition inside each Hom-category, vertical composition of natural transformations</li>
+</ul></li>
+</ul>
+</div>
+<div style="width: 50%;float: right;">
+<p><img src="../../images/8_cat-2-cat.jpg" /></p>
+</div>
+</section>
+<section id="horizontal-composition" class="level1">
+<h1>Horizontal Composition</h1>
+<ul>
+<li>2 Functors 1-morhpisms in <strong>Cat</strong> </br> <span class="math inline"><em>F</em> = <em>C</em> → <em>D</em></span></br> <span class="math inline"><em>G</em> = <em>D</em> → <em>E</em></span></li>
+<li>their composition </br> <span class="math inline"><em>G</em> ∘ <em>F</em> = <em>C</em> → <em>E</em></span></li>
+<li>2 Natural transformations <span class="math inline"><em>α</em></span> and <span class="math inline"><em>β</em></span> acting on <span class="math inline"><em>F</em></span> and <span class="math inline"><em>G</em></span> </br> <span class="math inline"><em>α</em> = <em>F</em> → <em>F</em>′</span></br> <span class="math inline"><em>β</em> = <em>G</em> → <em>G</em>′</span></br> we can’t apply vertical composition to <span class="math inline"><em>α</em></span> and <span class="math inline"><em>β</em></span></li>
+</ul>
+</section>
+<section id="horizontal-composition-βα-gf-to-gf" class="level1">
+<h1>Horizontal Composition </br> <span class="math inline"><em>β</em> ∘ <em>α</em> = <em>G</em> ∘ <em>F</em> → <em>G</em>′ ∘ <em>F</em>′</span></h1>
+<div style="width: 50%;float: left;">
+<p>Can we construct natural transformation between <span class="math inline"><em>G</em> ∘ <em>F</em></span> and <span class="math inline"><em>G</em>′ ∘ <em>F</em>′</span> ?</p>
+<ul>
+<li><span class="math inline"><em>a</em></span> splits into <span class="math inline"><em>F</em><em>a</em></span> and <span class="math inline"><em>F</em>′<em>a</em></span></li>
+<li><span class="math inline"><em>α</em><sub><em>a</em></sub></span> connects <span class="math inline"><em>F</em><em>a</em></span> and <span class="math inline"><em>F</em>′<em>a</em></span> </br> <span class="math inline"><em>α</em><sub><em>a</em></sub> = <em>F</em><em>a</em> → <em>F</em>′<em>a</em></span></li>
+<li>two objects split further into 4 objects </br> <span class="math inline"><em>G</em>(<em>F</em><em>a</em>), <em>G</em>′(<em>F</em><em>a</em>), <em>G</em>(<em>F</em>′<em>a</em>), <em>G</em>′(<em>F</em>′<em>a</em>)</span></li>
+<li>4 Morhpisms forming a square
+<ul>
+<li>2 from natural transfrom <span class="math inline"><em>β</em></span> </br> <span class="math inline"><em>β</em><sub><em>F</em><em>a</em></sub> = <em>G</em>(<em>F</em><em>a</em>) → <em>G</em>′(<em>F</em><em>a</em>)</span> </br> <span class="math inline"><em>β</em><sub><em>F</em>′<em>a</em></sub> = <em>G</em>(<em>F</em>′<em>a</em>) → <em>G</em>′(<em>F</em>′<em>a</em>)</span> </br></li>
+<li>other 2 are images of <span class="math inline"><em>α</em></span> under <span class="math inline"><em>G</em></span> and <span class="math inline"><em>G</em>′</span> </br> <span class="math inline"><em>G</em><sub><em>α</em><sub><em>a</em></sub></sub> = <em>G</em>(<em>F</em><em>a</em>) → <em>G</em>(<em>F</em>′<em>a</em>)</span></br> <span class="math inline"><em>G</em>′<sub><em>α</em><sub><em>a</em></sub></sub> = <em>G</em>′(<em>F</em><em>a</em>) → <em>G</em>′(<em>F</em>′<em>a</em>)</span></br></li>
+</ul></li>
+</ul>
+</div>
+<div style="width: 50%;float: right;">
+<ul>
+<li>Need to find path <span class="math inline"><em>G</em>(<em>F</em><em>a</em>) → <em>G</em>′(<em>F</em>′<em>a</em>)</span> mapping <span class="math inline"><em>G</em> ∘ <em>F</em> → <em>G</em>′ ∘ <em>F</em>′</span>
+<ul>
+<li>there are two paths </br> <span class="math inline"><em>G</em>′<em>α</em><sub><em>a</em></sub> ∘ <em>β</em><sub><em>F</em><em>a</em></sub></span> </br> <span class="math inline"><em>β</em><sub><em>F</em>′<em>a</em></sub> ∘ <em>G</em><em>α</em><sub><em>a</em></sub></span> </br></li>
+<li>but they are equal because of the naturality condition of <span class="math inline"><em>β</em></span> <img src="../../images/9_horizontal.jpg" /></li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="horizontal-composition-1" class="level1">
+<h1>Horizontal Composition</h1>
+<div style="width: 50%;float: left;">
+<ul>
+<li>?? Natural transformations collapse all equivalent functors between categories <code>C</code> and <code>D</code> and horizontal composition is the composition of these collapsed functors ??</li>
+<li><strong>Interchage law</strong> for horizontal composition </br> <span class="math inline">(<em>β</em>′ ⋅ <em>α</em>′) ∘ (<em>β</em> ⋅ <em>α</em>) = (<em>β</em>′ ∘ <em>β</em>) ⋅ (<em>α</em>′ ∘ <em>α</em>)</span></li>
+</ul>
+</div>
+<div style="width: 50%;float: right;">
+<p><img src="../../images/sideways.jpg" /></p>
+</div>
+</section>
+<section id="question-1" class="level1">
+<h1>Question 1</h1>
+<p>Define a natural transformation from the Maybe functor to the list functor. Prove the naturality condition for it.</p>
+</section>
+<section id="answer-1" class="level1">
+<h1>Answer 1</h1>
+<p>Given the following</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode stretch haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">-- definition of Maybe functor</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">data</span> <span class="dt">Maybe</span> a <span class="fu">=</span> <span class="dt">Maybe</span> a <span class="fu">|</span> <span class="dt">Nothing</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">fmapMaybe _ <span class="dt">Nothing</span> <span class="fu">=</span> <span class="dt">Nothing</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">fmapMaybe f (<span class="dt">Just</span> a) <span class="fu">=</span> <span class="dt">Just</span> (f a)</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw">instance</span> <span class="dt">Functor</span> <span class="dt">Maybe</span> <span class="kw">where</span> fmap <span class="fu">=</span> fmapMaybe</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">-- definition of list functor in pseudo haskell</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="kw">data</span> [a] <span class="fu">=</span> [] <span class="fu">|</span> a <span class="fu">:</span> [a]</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">fmapList _ [] <span class="fu">=</span> []</a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">fmapList f (a<span class="fu">:</span>tail) <span class="fu">=</span> f a <span class="fu">:</span> fmapList f tail</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="kw">instance</span> <span class="dt">Functor</span> [] <span class="kw">where</span> fmap <span class="fu">=</span> fmapList</a></code></pre></div>
+</section>
+<section id="answer-1-1" class="level1">
+<h1>Answer 1</h1>
+<div class="sourceCode" id="cb5"><pre class="sourceCode stretch haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">-- Natural transform Maybe to list</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="ot">maybeToList ::</span> <span class="dt">Maybe</span> a <span class="ot">-&gt;</span> [a]</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">maybeToList <span class="dt">Nothing</span> <span class="fu">=</span> []</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">maybeToList (<span class="dt">Just</span> a) <span class="fu">=</span> [a]</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">-- Natuarality condition</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">fmapList f <span class="fu">.</span> maybeToList <span class="fu">=</span> maybeToList <span class="fu">.</span> fmapMaybe f</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">-- LHS at Nothing</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="dt">LHS</span>  <span class="fu">=</span> (fmapList f <span class="fu">.</span> maybeToList) <span class="dt">Nothing</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">     <span class="fu">=</span> fmapList f (maybeToList <span class="dt">Nothing</span>)   <span class="co">-- function compisition</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">     <span class="fu">=</span> fampList f []                      <span class="co">-- maybeToList</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12">     <span class="fu">=</span> []                                 <span class="co">-- fmapList</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">-- RHS at Nothing</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="dt">RHS</span>  <span class="fu">=</span> (maybeToList f <span class="fu">.</span> fmapMaybe) <span class="dt">Nothing</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15">     <span class="fu">=</span> maybeToList (fmapMaybe f <span class="dt">Nothing</span>)   <span class="co">-- function composition</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16">     <span class="fu">=</span> maybeToList <span class="dt">Nothing</span>                 <span class="co">-- fmapMaybe</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17">     <span class="fu">=</span> []                                  <span class="co">-- maybeToList</span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">-- Naturality hodlds at Nothing</span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="dt">LHS</span> <span class="fu">=</span> <span class="dt">RHS</span></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">-- LHS at Just a</span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="dt">LHS</span>  <span class="fu">=</span> (fmapList f <span class="fu">.</span> maybeToList) (<span class="dt">Just</span> a)</a>
+<a class="sourceLine" id="cb5-22" data-line-number="22">     <span class="fu">=</span> fmapList f (maybeToList (<span class="dt">Just</span> a))   <span class="co">-- function compisition</span></a>
+<a class="sourceLine" id="cb5-23" data-line-number="23">     <span class="fu">=</span> fampList f [a]                      <span class="co">-- maybeToList</span></a>
+<a class="sourceLine" id="cb5-24" data-line-number="24">     <span class="fu">=</span> [f a]                               <span class="co">-- fmapList</span></a>
+<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co">-- RHS at (Just a)</span></a>
+<a class="sourceLine" id="cb5-26" data-line-number="26"><span class="dt">RHS</span>  <span class="fu">=</span> (maybeToList f <span class="fu">.</span> fmapMaybe) (<span class="dt">Just</span> a)</a>
+<a class="sourceLine" id="cb5-27" data-line-number="27">     <span class="fu">=</span> maybeToList (fmapMaybe f (<span class="dt">Just</span> a))   <span class="co">-- function composition</span></a>
+<a class="sourceLine" id="cb5-28" data-line-number="28">     <span class="fu">=</span> maybeToList (<span class="dt">Just</span> (f a))             <span class="co">-- fmapMaybe</span></a>
+<a class="sourceLine" id="cb5-29" data-line-number="29">     <span class="fu">=</span> [f a]                                <span class="co">-- maybeToList</span></a>
+<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="co">-- Naturality hodlds at Just a</span></a>
+<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="dt">RHS</span> <span class="fu">=</span> <span class="dt">LHS</span></a></code></pre></div>
+</section>
+<section id="question-2" class="level1">
+<h1>Question 2</h1>
+<p>Define at least two different natural transformations between Reader () and the list functor. How many different lists of () are there?</p>
+</section>
+<section id="answer-2" class="level1">
+<h1>Answer 2</h1>
+<div class="sourceCode" id="cb6"><pre class="sourceCode stretch haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">newtype</span> <span class="dt">Reader</span> e a <span class="fu">=</span> <span class="dt">Reader</span> (e <span class="ot">-&gt;</span> a)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="ot">readerToList1 ::</span> <span class="dt">Reader</span> () a <span class="ot">-&gt;</span> [a]</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">readerToList1 (<span class="dt">Reader</span> g) <span class="fu">=</span> [g ()]</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="ot">readerToList2 ::</span> <span class="dt">Reader</span> () a <span class="ot">-&gt;</span> [a]</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">readerToList2 (<span class="dt">Reader</span> g) <span class="fu">=</span> [g (), g ()]</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="ot">readerToListN ::</span> <span class="dt">Reader</span> () a <span class="ot">-&gt;</span> [a]</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">readerToListN (<span class="dt">Reader</span> g) <span class="fu">=</span> g () <span class="fu">:</span> readerToListN (<span class="dt">Reader</span> g)</a></code></pre></div>
+<p>There are infinitely many lists of <code>()</code> since lists could be infinitely long and each different length list of <code>()</code> is a different list.</p>
+</section>
+<section id="question-3" class="level1">
+<h1>Question 3</h1>
+<p>Continue the previous exercise with Reader Bool and Maybe.</p>
+</section>
+<section id="answer-3" class="level1">
+<h1>Answer 3</h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode stretch haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="ot">readerToMaybeTrue ::</span> <span class="dt">Reader</span> <span class="dt">Bool</span> a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> a</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">readerToMaybeTrue (<span class="dt">Reader</span> g) <span class="fu">=</span> <span class="dt">Just</span> (g <span class="dt">True</span>)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="ot">readerToMaybeFalse ::</span> <span class="dt">Reader</span> <span class="dt">Bool</span> a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> a</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">readerToMaybeFalse (<span class="dt">Reader</span> g) <span class="fu">=</span> <span class="dt">Just</span> (g <span class="dt">False</span>)</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="ot">readerToMaybeNothing ::</span> <span class="dt">Reader</span> <span class="dt">Bool</span> a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> a</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">readerToMaybeNothing _ <span class="fu">=</span> <span class="dt">Nothing</span></a></code></pre></div>
+<p>There are three natural transformations from <code>Reader Bool</code> to <code>Maybe</code></p>
+</section>
+<section id="question-4" class="level1">
+<h1>Question 4</h1>
+<p>Show that horizontal composition of natural transformation satisfies the naturality condition (hint: use components). It’s a good exercise in diagram chasing.</p>
+</section>
+<section id="answer-4" class="level1">
+<h1>Answer 4</h1>
+<div style="width: 35%;float: left;font-size:0.6em;">
+<ul>
+<li>red is <span class="math inline">(<em>β</em> ∘ <em>α</em>)<sub><em>a</em></sub> = <em>G</em><sub><em>a</em></sub> ∘ <em>F</em><sub><em>a</em></sub> → <em>G</em>′<sub><em>a</em></sub> ∘ <em>F</em>′<sub><em>a</em></sub></span></li>
+<li>blue is <span class="math inline">(<em>β</em> ∘ <em>α</em>)<sub><em>b</em></sub> = <em>G</em><sub><em>b</em></sub> ∘ <em>F</em><sub><em>b</em></sub> → <em>G</em>′<sub><em>b</em></sub> ∘ <em>F</em>′<sub><em>b</em></sub></span></li>
+<li>khaki is <span class="math inline"><em>G</em> ∘ <em>F</em><sub><em>F</em></sub></span></li>
+<li>green is <span class="math inline"><em>G</em>′ ∘ <em>F</em>′<sub><em>F</em></sub></span></li>
+<li>diagram chasing shows
+<ul>
+<li><span class="math inline">(<em>G</em>′ ∘ <em>F</em>)′ ∘ (<em>β</em> ∘ <em>α</em>) = (<em>β</em> ∘ <em>α</em>) ∘ (<em>G</em> ∘ <em>F</em>)</span></li>
+</ul></li>
+</ul>
+</div>
+<div style="width: 65%;float: right;">
+<p><img src="../../images/horizontal-naturality.svg" /></p>
+</div>
+</section>
+<section id="question-5" class="level1">
+<h1>Question 5</h1>
+<p>Write a short essay about how you may enjoy writing down the evident diagrams needed to prove the interchange law.</p>
+</section>
+<section id="answer-5" class="level1">
+<h1>Answer 5</h1>
+<p>I would enjoy writing a program that generates and checks the diagrams needed to prove the interchange law.</p>
+</section>
+<section id="question-6" class="level1">
+<h1>Question 6</h1>
+<p>Create a few test cases for the opposite naturality condition of transformations between different Op functors. Here’s one choice:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode stretch haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="ot">  op ::</span> <span class="dt">Op</span> <span class="dt">Bool</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">  op <span class="fu">=</span> <span class="dt">Op</span> (\x <span class="ot">-&gt;</span> x <span class="fu">&gt;</span> <span class="dv">0</span>)</a></code></pre></div>
+<p>and</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode stretch haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="ot">  f ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">  f x <span class="fu">=</span> read x</a></code></pre></div>
+</section>
+<section id="answer-6" class="level1">
+<h1>Answer 6</h1>
+<div class="sourceCode" id="cb10"><pre class="sourceCode stretch haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Main</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw">class</span> <span class="dt">Contravariant</span> f <span class="kw">where</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="ot">    contramap ::</span> (b <span class="ot">-&gt;</span> a) <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> f b</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="kw">newtype</span> <span class="dt">Op</span> r a <span class="fu">=</span> <span class="dt">Op</span> (a <span class="ot">-&gt;</span> r)</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">runOp (<span class="dt">Op</span> f) <span class="fu">=</span> f</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="kw">instance</span> <span class="dt">Contravariant</span> (<span class="dt">Op</span> r) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10">    contramap f (<span class="dt">Op</span> g) <span class="fu">=</span> <span class="dt">Op</span> (g <span class="fu">.</span> f)</a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="ot">op ::</span> <span class="dt">Op</span> <span class="dt">Bool</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14">op <span class="fu">=</span> <span class="dt">Op</span> (\x <span class="ot">-&gt;</span> x <span class="fu">&gt;</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="ot">f ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17">f x <span class="fu">=</span> read x</a>
+<a class="sourceLine" id="cb10-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="ot">alpha ::</span> <span class="dt">Op</span> <span class="dt">Bool</span> a <span class="ot">-&gt;</span> <span class="dt">Op</span> <span class="dt">String</span> a</a>
+<a class="sourceLine" id="cb10-20" data-line-number="20">alpha (<span class="dt">Op</span> f) <span class="fu">=</span> <span class="dt">Op</span> (const <span class="st">&quot;2&quot;</span>)</a>
+<a class="sourceLine" id="cb10-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb10-22" data-line-number="22">main <span class="fu">=</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb10-23" data-line-number="23">  putStrLn <span class="fu">$</span> <span class="st">&quot;(contramap f . alpha) \&quot;\&quot; == 2&quot;</span> <span class="fu">++</span></a>
+<a class="sourceLine" id="cb10-24" data-line-number="24">    show (runOp((contramap f <span class="fu">.</span> alpha) op) <span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb10-25" data-line-number="25">  putStrLn <span class="fu">$</span> <span class="st">&quot;(alpha . contramap f) \&quot;\&quot; == 2&quot;</span> <span class="fu">++</span></a>
+<a class="sourceLine" id="cb10-26" data-line-number="26">    show (runOp((alpha <span class="fu">.</span> contramap f ) op) <span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb10-27" data-line-number="27">  putStrLn <span class="fu">$</span> <span class="st">&quot;contramap f . alpha  = alpha . contramap f &quot;</span> <span class="fu">++</span></a>
+<a class="sourceLine" id="cb10-28" data-line-number="28">    show ((runOp((contramap f <span class="fu">.</span> alpha) op) <span class="st">&quot;&quot;</span>) <span class="fu">==</span> (runOp((alpha <span class="fu">.</span> contramap f ) op) <span class="st">&quot;&quot;</span>) )</a></code></pre></div>
+<pre class="stretch"><code>&gt; (contramap f . alpha) &quot;&quot; == 2&quot;2&quot;
+&gt; (alpha . contramap f) &quot;&quot; == 2&quot;2&quot;
+&gt; contramap f . alpha  = alpha . contramap f True</code></pre>
+</section>
+      </div>
+    </div>
+    
+
+    <script src="../../3rdParty/reveal.js/lib/js/head.min.js"></script>
+    <script src="../../3rdParty/reveal.js/js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+
+        // // The "normal" size of the presentation, aspect ratio will be preserved
+        // // when the presentation is scaled to fit different resolutions. Can be
+        // // specified using percentage units.
+        // width: 960,
+        // height: 700,
+
+        // // Factor of the display size that should remain empty around the content
+        // margin: 0.0,
+
+        // // Bounds for smallest/largest possible scale to apply to content
+        // minScale: 0.1,
+        // maxScale: 2.5,
+
+        // with sizing
+        width: 1024, height: 768, margin: 0.1, minScale: 0.1, maxScale: 3,
+
+        // no sizing
+        // width: "100%", height: "100%", margin: 0, minScale: 1, maxScale: 1,
+
+        // Display controls in the bottom right corner
+        
+        controls: true,
+        
+
+
+        // Display a presentation progress bar
+        
+        progress: true,
+        
+
+        // Set default timing of 2 minutes per slide
+        defaultTiming: 120,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: true,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autolaying embedded media (video/audio/iframe)
+        // - null: Media will only autoplay if data-autoplay is present
+        // - true: All media will autoplay, regardless of individual setting
+        // - false: No media will autoplay, regardless of individual setting
+        autoPlayMedia: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: Reveal.navigateNext,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // Hides the address bar on mobile devices
+        hideAddressBar: true,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
+
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Parallax background image
+        parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+        // Parallax background size
+        parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
+
+        // Number of pixels to move the parallax background per slide
+        // - Calculated automatically unless specified
+        // - Set to 0 to disable movement along an axis
+        parallaxBackgroundHorizontal: null,
+        parallaxBackgroundVertical: null,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: '../../3rdParty/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: '../../3rdParty/reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>

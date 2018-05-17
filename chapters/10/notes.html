@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Category Theory Study Group - notes</title>
+        <link rel="stylesheet" type="text/css" href="../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../css/highlighting.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="navigation">
+                <a href="../../">Home</a>
+            </div>
+        </div>
+
+		<div id="content">
+	<h1>notes</h1>
+
+	<h1 id="natural-transformations">Natural Transformations</h1>
+<div class="line-block">Natural transformation maps fucntors to functors by picking for every object <span class="math inline"><em>a</em></span> in the source category a morphism in the target category to do the mapping.<br />
+  <span class="math inline"><em>α</em><sub><em>a</em></sub> = <em>F</em><em>a</em> → <em>G</em><em>a</em></span><br />
+The mapping must also preserve the <strong>natuarality condition</strong><br />
+  <span class="math inline"><em>G</em>⨍ ∘ <em>α</em><sub><em>a</em></sub> = <em>α</em><sub><em>b</em></sub> ∘ <em>F</em>⨍</span><br />
+  where<br />
+    <span class="math inline">⨍ = <em>α</em> → <em>β</em></span><br />
+    <span class="math inline"><em>F</em>⨍ = <em>F</em><em>a</em> → <em>F</em><em>b</em></span><br />
+    <span class="math inline"><em>G</em>⨍ = <em>G</em><em>a</em> → <em>G</em><em>b</em></span><br />
+    <span class="math inline"><em>α</em><sub><em>a</em></sub> = <em>F</em><em>a</em> → <em>G</em><em>a</em></span><br />
+    <span class="math inline"><em>α</em><sub><em>b</em></sub> = <em>F</em><em>b</em> → <em>G</em><em>b</em></span></div>
+<p><img src="../../images/naturality.jpg" height="150" /></p>
+<div class="line-block">Its <strong>stringent</strong>. If <span class="math inline"><em>F</em>⨍</span> is invertible then <span class="math inline"><em>α</em><sub><em>b</em></sub></span> is determined in terms of <span class="math inline"><em>α</em><sub><em>a</em></sub></span><br />
+  <span class="math inline"><em>α</em><sub><em>b</em></sub> = (<em>G</em>⨍) ∘ <em>α</em><sub><em>a</em></sub> ∘ (<em>F</em>⨍)<sup> − 1</sup></span></div>
+<p><img src="../../images/transport.jpg" height="150" /></p>
+<p><strong>Viewed componentwise</strong> could say:</p>
+<ul>
+<li>maps objects to morphisms</li>
+<li>maps morphisms to comuting squares <img src="../../images/comuting-square.jpg" height="150" /></li>
+</ul>
+<h1 id="polymorphic-functions">Polymorphic Functions</h1>
+<p>With <strong>parametric polymorphism</strong> as in Haskell any function between functors polymorphic in the element is a natural transformation.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">-- Always a natural transformation</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ot">alpha ::</span> <span class="dt">F</span> a <span class="ot">-&gt;</span> <span class="dt">G</span> a</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">-- naturality always holds</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">(fmap <span class="fu">@</span> <span class="dt">G</span>) f <span class="fu">.</span> alpha <span class="fu">=</span> alpha <span class="fu">.</span> (fmap <span class="fu">@</span> <span class="dt">F</span>) f</a></code></pre></div>
+<p>This is due to *“theoroms for free”**</p>
+<p>Even functions to values can be seen as natural transformations</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">-- Normal version</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">length<span class="ot"> ::</span> [a] <span class="ot">-&gt;</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">-- Version cast recast as natural transformation</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="ot">lengthF ::</span> [a] <span class="ot">-&gt;</span> <span class="dt">Const</span> <span class="dt">Int</span> a</a></code></pre></div>
+<h1 id="contravariant-functors">Contravariant Functors</h1>
+<ul>
+<li>Equavilent to covariant functors in the opposite category</li>
+<li>Not natural transformations in <strong>Hask</strong></li>
+<li><p>They do satisfy the opposite naturailty condition in <strong>Hask</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1">(contramap <span class="fu">@</span> <span class="dt">G</span>) <span class="fu">.</span> alpha <span class="fu">=</span> alpha <span class="fu">.</span> (contramap <span class="fu">@</span> <span class="dt">F</span>)</a></code></pre></div></li>
+</ul>
+<h1 id="functor-category">Functor Category</h1>
+<ul>
+<li>One category of functors for each pair of categories <span class="math inline"><em>C</em></span> an <span class="math inline"><em>D</em></span></li>
+<li>Objects are functors from <span class="math inline"><em>C</em></span> to <span class="math inline"><em>D</em></span></li>
+<li>Morphism are natural transformations between the functors</br> <span class="math inline"><em>α</em><sub><em>a</em></sub> = <em>F</em><em>a</em> → <em>F</em><em>b</em></span></br> <span class="math inline"><em>β</em><sub><em>a</em></sub> = <em>G</em><em>a</em> → <em>H</em><em>a</em></span></br> <span class="math inline"><em>β</em><sub><em>a</em></sub> ∘ <em>α</em><sub><em>a</em></sub> = <em>F</em><em>a</em> → <em>H</em><em>a</em></span></br> <span class="math inline">(<em>β</em> ⋅ <em>α</em>)<sub><em>a</em></sub> = <em>β</em><sub><em>a</em></sub> ∘ <em>α</em><sub><em>a</em></sub></span></br> <img src="../../images/vertical.jpg" height="150" /></li>
+<li>composition of natural transformation is associative because there component morphisms are asociative.</li>
+<li>Naturality holds for the composition</br> <span class="math inline"><em>H</em>⨍ ∘ (<em>β</em> ⋅ <em>α</em>)<sub><em>a</em></sub> = (<em>β</em> ⋅ <em>α</em>)<sub><em>b</em></sub> ∘ <em>F</em>⨍</span></br> <img src="../../images/verticalnaturality.jpg" height="150" /></li>
+<li>Indentity natural transformation <span class="math inline">1<sub><em>F</em></sub></span> whose components are the identity morphisms.</br> <span class="math inline"><em>i</em><em>d</em><sub><em>F</em><sub><em>a</em></sub></sub> = <em>F</em><em>a</em> → <em>F</em><em>a</em></span></li>
+<li>Called <span class="math inline">[<em>C</em>, <em>D</em>]</span> or <span class="math inline"><em>D</em><sup><em>C</em></sup></span></li>
+</ul>
+<h2 id="vertical-composition">Vertical composition</h2>
+<ul>
+<li>composition used above known as vertical composition</li>
+<li>composition of natural transformation within the same category</li>
+<li><span class="math inline"><em>β</em> ⋅ <em>α</em></span></br> <img src="../../images/vertical2.jpg" height="150" /></li>
+</ul>
+<h1 id="categories">2-Categories</h1>
+<ul>
+<li><strong>Cat</strong> category of <em>small</em> categories</li>
+<li>Hom-set in <strong>Cat</strong> set of functors</li>
+<li>Functors form a category</li>
+<li>In <strong>Cat</strong> as 2-category
+<ul>
+<li>Objects: <em>Small</em> categories</li>
+<li>1-morphisms: Functors between categories</li>
+<li>2-morphisms: Natural transformations between Functors (morphisms of morphisms)</li>
+</ul></li>
+<li>Hom-category <span class="math inline"><em>D</em><sup><em>C</em></sup></span> instead of Hom-set between categories <span class="math inline"><em>C</em></span> and <span class="math inline"><em>D</em></span>
+<ul>
+<li>Regular functor compistion</br> <span class="math inline"><em>F</em></span> from <span class="math inline"><em>D</em><sup><em>C</em></sup></span></br> <span class="math inline"><em>G</em></span> from <span class="math inline"><em>E</em><sup><em>D</em></sup></span></br> <span class="math inline"><em>G</em> ∘ <em>F</em></span> in <span class="math inline"><em>E</em><sup><em>C</em></sup></span></li>
+<li>Also composition inside each Hom-category, vertical composition of natural transformations</br> <img src="../../images/8_cat-2-cat.jpg" height="150" /></li>
+</ul></li>
+</ul>
+<h2 id="horizontal-composition">Horizontal Composition</h2>
+<ul>
+<li>2 Functors 1-morhpisms in <strong>Cat</strong> </br> <span class="math inline"><em>F</em> = <em>C</em> → <em>D</em></span> <span class="math inline"><em>G</em> = <em>D</em> → <em>E</em></span></li>
+<li>their composition </br> <span class="math inline"><em>G</em> ∘ <em>F</em> = <em>C</em> → <em>E</em></span></li>
+<li>2 Natural transformations <span class="math inline"><em>α</em></span> and <span class="math inline"><em>β</em></span> acting on <span class="math inline"><em>F</em></span> and $G </br> <span class="math inline"><em>α</em> = <em>F</em> → <em>F</em>′</span></br> <span class="math inline"><em>β</em> = <em>G</em> → <em>G</em>′</span></br> we can’t apply vertical composition to <span class="math inline"><em>α</em></span> and <span class="math inline"><em>β</em></span></li>
+<li>Can we construct natural transformation between <span class="math inline"><em>G</em> ∘ <em>F</em></span> and <span class="math inline"><em>G</em>′ ∘ <em>F</em>′</span> ? Yes. </br> <img src="../../images/9_horizontal.jpg" height="150" /> </br>
+<ul>
+<li><span class="math inline"><em>a</em></span> splits into <span class="math inline"><em>F</em><em>a</em></span> and <span class="math inline"><em>F</em>′<em>a</em></span></li>
+<li><span class="math inline"><em>α</em><sub><em>a</em></sub></span> connects <span class="math inline"><em>F</em><em>a</em></span> and <span class="math inline"><em>F</em>′<em>a</em></span> </br> <span class="math inline"><em>α</em><sub><em>a</em></sub> = <em>F</em><em>a</em> → <em>F</em>′<em>a</em></span></li>
+<li>two objects split further into 4 objects </br> <span class="math inline"><em>G</em>(<em>F</em><em>a</em>), <em>G</em>′(<em>F</em><em>a</em>), <em>G</em>(<em>F</em>′<em>a</em>), <em>G</em>′(<em>F</em>′<em>a</em>)</span></li>
+<li>4 Morhpisms forming a square
+<ul>
+<li>2 from natural transfrom <span class="math inline"><em>β</em></span> </br> <span class="math inline"><em>β</em><sub><em>F</em><em>a</em></sub> = <em>G</em>(<em>F</em><em>a</em>) → <em>G</em>′(<em>F</em><em>a</em>)</span> </br> <span class="math inline"><em>β</em><sub><em>F</em>′<em>a</em></sub> = <em>G</em>(<em>F</em>′<em>a</em>) → <em>G</em>′(<em>F</em>′<em>a</em>)</span> </br></li>
+<li>other 2 are images of <span class="math inline"><em>α</em></span> under <span class="math inline"><em>G</em></span> and <span class="math inline"><em>G</em>′</span> </br> <span class="math inline"><em>G</em><sub><em>α</em><sub><em>a</em></sub></sub> = <em>G</em>(<em>F</em><em>a</em>) → <em>G</em>(<em>F</em>′<em>a</em>)</span></br> <span class="math inline"><em>G</em>′<sub><em>α</em><sub><em>a</em></sub></sub> = <em>G</em>′(<em>F</em><em>a</em>) → <em>G</em>′(<em>F</em>′<em>a</em>)</span></br></li>
+</ul></li>
+<li>Need to find path <span class="math inline"><em>G</em>(<em>F</em><em>a</em>) → <em>G</em>′(<em>F</em>′<em>a</em>)</span> mapping <span class="math inline"><em>G</em> ∘ <em>F</em> → <em>G</em>′ ∘ <em>F</em>′</span>
+<ul>
+<li>there are two paths </br> <span class="math inline"><em>G</em>′<em>α</em><sub><em>a</em></sub> ∘ <em>β</em><sub><em>F</em><em>a</em></sub></span> </br> <span class="math inline"><em>β</em><sub><em>F</em>′<em>a</em></sub> ∘ <em>G</em><em>α</em><sub><em>a</em></sub></span> </br></li>
+<li>but they are equal because of the naturality condition of <span class="math inline"><em>β</em></span></li>
+</ul></li>
+<li>This is called the horizontal composition of <span class="math inline"><em>α</em></span> and <span class="math inline"><em>β</em></span> </br> <span class="math inline"><em>β</em> ∘ <em>α</em> = <em>G</em> ∘ <em>F</em> → <em>G</em>′ ∘ <em>F</em>′</span></li>
+<li>?? Natural transofrmations collapse all equivelant functors between categories <code>C</code> and <code>D</code> and horizontal compisition is the composition of these collapsed functors ?? <img src="../../images/sideways.jpg" height="150" /></li>
+<li><strong>Interchage law</strong> for horizontal composition </br> <span class="math inline">(<em>β</em>′ ⋅ <em>α</em>′) ∘ (<em>β</em> ⋅ <em>α</em>) = (<em>β</em>′ ∘ <em>β</em>) ⋅ (<em>α</em>′ ∘ <em>α</em>)</span></li>
+</ul></li>
+</ul>
+</div>
+
+
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>
