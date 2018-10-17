@@ -8,3 +8,6 @@ Chapters
   * [slides](./chapters/10/presentation.html)
   * [notes](./chapters/10/notes.html)
   * [excercies](./chapters/10/exercises.html)
+* 13
+  * [slides](./chapters/13/presentation.html)
+  * [notes and exercises](./chapters/13/notes.html)
