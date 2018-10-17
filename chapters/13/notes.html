@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Category Theory Study Group - notes</title>
+        <link rel="stylesheet" type="text/css" href="../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../css/highlighting.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="navigation">
+                <a href="../../">Home</a>
+            </div>
+        </div>
+
+		<div id="content">
+	<h1>notes</h1>
+
+	<h1 id="free-monoids">Free monoids</h1>
+<h2 id="monoid-set-theoretic">Monoid Set Theoretic</h2>
+<ul>
+<li>definition:
+<ul>
+<li>Binary operator that map pairs of elements to other elements.
+<ul>
+<li><code>u :: (m,m) -&gt; m</code> or <code>* :: m -&gt; m -&gt; m</code></li>
+</ul></li>
+<li>There is an identity element <code>e</code> combined with any other element maps to that element.
+<ul>
+<li><code>e * a = a * e = a</code></li>
+</ul></li>
+<li>The operations is associative, the order of reducing multiple oprations does not matter.
+<ul>
+<li><code>(a * b) * c = a * (b * c)</code></li>
+</ul></li>
+</ul></li>
+<li>Given any two elements identify another element satisfying the laws.
+<ul>
+<li>The identification is monoid dependent.</li>
+<li>Multiple pairs could map to the same element</li>
+<li>Natural numbers under summation
+<ul>
+<li><code>3 = 0 + 3 = 1 + 2 = 2 + 1 = 3 + 0</code></li>
+<li>All the identifications are not important and are specific to the specific monoid</li>
+<li>some of the identifications are necessary to satisfy the laws.</li>
+<li>Free monoid is the monoid where the minimum of identifications are required to satisfy the laws.</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="fu">!--</span> <span class="fu">--&gt;</span></a></code></pre></div>
+<ul>
+<li>Construct free monoid:
+<ul>
+<li>Start with a set of generators <code>{a,b}</code></li>
+<li>monoid requires an identity element so add it to the set <code>{a,b,e}</code></li>
+<li>the possible pairs are then
+<ul>
+<li><code>e * a</code></li>
+<li><code>b * e</code></li>
+<li><code>a * e</code></li>
+<li><code>a * b</code></li>
+<li><code>b * a</code></li>
+</ul></li>
+<li>need to identify the results of <code>e</code> pairs for monoid laws
+<ul>
+<li><code>e * a = a</code></li>
+<li><code>b * e = b</code></li>
+<li><code>a * e = a</code></li>
+<li><code>e * b = b</code></li>
+</ul></li>
+<li>but the results of the other pairs are not important so extend the set with them <code>{a, b, e, aa, bb, ab, ba}</code></li>
+<li>the new set excluding the identity element combinations have the following new pairs.
+<ul>
+<li><code>a * aa</code></li>
+<li><code>a * bb</code></li>
+<li><code>a * ab</code></li>
+<li><code>a * ba</code></li>
+<li><code>b * aa</code></li>
+<li><code>b * bb</code></li>
+<li><code>b * ab</code></li>
+<li><code>b * ba</code></li>
+<li><code>ab * a</code></li>
+<li><code>ba * a</code></li>
+<li><code>ab * b</code></li>
+<li><code>ba * b</code></li>
+</ul></li>
+<li>because of associativity law we have to identify some of the new pairs as the same
+<ul>
+<li><code>a * bb = ab * b</code></li>
+<li><code>a * ba = ab * a</code></li>
+<li><code>b * aa = ba * a</code></li>
+<li><code>b * ab = ba * b</code></li>
+</ul></li>
+<li>we extend the set by adding all the unique pairs to it <code>{a, b, e, aa, bb, ab, ba, aaa, bbb, aab, aba, bba, baa, abb}</code></li>
+<li>we infinitly continue recursively buiding up the set.</li>
+<li>This set is the set of lists of all the possible combinations of the original generators, where
+<ul>
+<li>identity element means we could have an empty list</li>
+<li>associativity means it does not matter which order the list is built up.</li>
+</ul></li>
+<li>So basically list is the free monoid.</li>
+</ul></li>
+</ul>
+<h2 id="monoid-category-theoretic">Monoid Category Theoretic</h2>
+<ul>
+<li>Category of monoids <strong>Mon</strong>
+<ul>
+<li>Objects in the category of monoids would be monoids</li>
+<li>Morphisms in the category of monoids
+<ul>
+<li>Need to preserver the underlying structure which is called a <strong>homomorphism</strong>
+<ul>
+<li>Needs to map identity <code>e₁</code> in first monoid to <code>e₂</code> in second monoid.</li>
+<li>needs to map pairs in the first monoid to pairs of mapping in the second monoid <code>h(a *₁ b) -&gt; h a *₂ h b</code></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Constructing free Monoid
+<ul>
+<li>relied on starting with a set of generators</li>
+<li>can’t uniquely map the category of sets to the category of monoids, because for each set there are possibly multiple monoids differing in the binary oprator</li>
+<li>can uniquely map the category of monoids to the category of sets</li>
+<li>Functor <strong>U</strong> assigning every monoid to its unique underlying set <code>U :: Mon -&gt; Set</code></li>
+<li><strong>U</strong> is a forgetful functor because it forgets the structure in <strong>Mon</strong> going to <strong>Set</strong></li>
+</ul></li>
+<li>Universal construction
+<ul>
+<li>First part pick a pattern
+<ul>
+<li>Given some generator set <code>x</code> in <code>Set</code> we map through some function <code>p</code> to the mapping of the monoid <code>m</code> in <code>Mon</code> to the set <code>Um</code> in <code>Set</code> , <code>given x choose (m, p :: x -&gt; Um)</code></li>
+</ul></li>
+<li>Second part define a ranking between choices of your pattern
+<ul>
+<li><code>m₁</code> is better than <code>m₂</code> if there is a moprhism <code>h</code> from <code>m₁</code> to <code>m₂</code> and functions <code>p₁</code> from <code>x</code> to <code>U m₁</code> and <code>p₂</code> from <code>x</code> to <code>U m₂</code> such that <code>U h . p₁ = p₂</code> (diagram commutes)</li>
+</ul></li>
+<li>Final step select the best one
+<ul>
+<li>according to the ranking it has to be the initial object in <code>Mon</code> since the best one will have a unique mapping to every other object in <code>Mon</code></li>
+</ul></li>
+<li>So every monoid can be derived from the free monoid by identifying extra pairs.
+<ul>
+<li>If the other monoid is bigger than the free monoid then the free monoid can be embedded in it through <code>h</code>.</li>
+<li>If the other monoid is small than the free monoid then the free monoid can be projected</li>
+</ul></li>
+</ul></li>
+</ul>
+<h1 id="challanges">Challanges</h1>
+<h2 id="question-1">Question 1</h2>
+<p>You might think (as I did, originally) that the requirement that a homomorphism of monoids preserve the unit is redundant. After all, we know that for all a</p>
+<pre><code>h a * h e = h (a * e) = h a</code></pre>
+<p>So <code>h</code> <code>e</code> acts like a right unit (and, by analogy, as a left unit). The problem is that <code>h</code> <code>a</code>, for all <code>a</code> might only cover a sub-monoid of the target monoid. There may be a “true” unit outside of the image of <code>h</code>. Show that an isomorphism between monoids that preserves multiplication must automatically preserve unit.</p>
+<h2 id="answer-1">Answer 1</h2>
+<p>Given</p>
+<p>`<code>h (a₁ * b₁) = h a₁ * h b₁</code></p>
+<p>Then</p>
+<pre><code>  -- h maps e₁ to anything
+  h (a₁ * e₁)
+    = h a₁ * h e₁
+    = h a₁ * c₂
+  -- a₁ * e₁ is identity
+  h (a₁ * e₁)
+    = h a₁
+    = h a₁
+ -- iif c₂ = e₂
+  h a₁ = h a₁ * c₂
+  -- therefore
+  h e₁ = e₂</code></pre>
+<h2 id="question-2">Question 2</h2>
+<p>Consider a monoid homomorphism from lists of integers with concatenation to integers with multiplication. What is the image of the empty list <code>[]</code>? Assume that all singleton lists are mapped to the integers they contain, that is <code>[3]</code> is mapped to 3, etc. What’s the image of <code>[1, 2, 3, 4]</code>? How many different lists map to the integer 12? Is there any other homomorphism between the two monoids?</p>
+<h2 id="answer-2">Answer 2</h2>
+<p>### 1</p>
+<pre><code> identity maps to identity
+ [] -&gt; 1
+ 1 is the identity of multiplication
+ 1 * a = a * 1 = a</code></pre>
+<p>### 2</p>
+<pre><code> [1, 2, 3, 4] -&gt; 24
+ because
+ 1*(2*(3*4)) = 1*((2*3)*4) = ((1*2)*3)*4 = 24</code></pre>
+<p>### 3 Double the factor pairs of 12 so 6 lists.</p>
+<pre><code>  [1, 12] -&gt; 12
+  [12, 1] -&gt; 12
+  [2, 6] -&gt; 12
+  [6, 2] -&gt; 12
+  [3, 4] -&gt; 12
+  [4, 3] -&gt; 12</code></pre>
+<h2 id="question-3">Question 3</h2>
+<p>What is the free monoid generated by a one-element set? Can you see what it’s isomorphic to?</p>
+<h2 id="answer-3">Answer 3</h2>
+<p>Given any 1 element set <code>{a}</code> the free monoid is <code>[()]</code> , or list of unit.</p>
+<pre><code>  p :: a -&gt; ()
+  p _ = ()
+  h :: Monoid m =&gt; m -&gt; [()]
+  h mempty = []
+  h _ = ()
+  U :: (Set s, Monoid m) =&gt; m -&gt; s
+  ????</code></pre>
+<p>It is isomorphic to <code>Bool</code> under <code>Or</code> / ‘||’</p>
+<pre><code>  -- h is a homomorphism
+  h :: [()] -&gt; Bool
+  -- empty list maps to False which is identiy under Or
+  False || True
+    = True | False
+    = True
+  h [] = False
+  -- one element list maps to True
+  h [()] = True
+  --- any list combined with unit list is True
+  h ([()], [])
+    = h [] ++ h [()]
+    = False || True
+    = True
+    = h [()]
+  h ([], [()])
+    = h [()] ++ h []
+    = True || False
+    = True
+    = h [()]
+  -- List of multiple elements map to True
+  h [(), (), ...]
+    = h ([()] ++ [()] ++ ...)
+    = h [()] ++ h [()] ++ ...
+    = True || True || ...
+    = True
+    = h [()]</code></pre>
+</div>
+
+
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>

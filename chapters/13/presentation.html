@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Category theory study group - Chapter 13</title>
+
+    <!-- reveal js -->
+    <link rel="stylesheet" href="../../3rdParty/reveal.js/css/reveal.css">
+    
+    <link rel="stylesheet" href="../../3rdParty/reveal.js/css/theme/serif.css" id="theme">
+    
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" type="text/css" href="../../css/highlighting.css" />
+
+    <!--[if lt IE 9]>
+    <script src="../../lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+<style>
+  .reveal section {
+    font-size: 0.65em;
+  }
+  .reveal h1{
+    font-size: 1.5em;
+    margin-top: -30px;
+  }
+  .reveal code {
+    background: antiquewhite;
+  }
+</style>
+<section id="monoid-set-theoretic" class="level1">
+<h1>Monoid Set Theoretic</h1>
+<div style="width: 50%;float: left;">
+<ul>
+<li>Binary operator that map pairs of elements to other elements. </br> <code>u :: (m,m) -&gt; m</code> </br>       or </br> <code>* :: m -&gt; m -&gt; m</code></li>
+<li>There is an identity element <code>e</code> combined with any other element maps to that element. </br> <code>e * a = a * e = a</code></li>
+<li>The operations is associative, the order of reducing multiple oprations does not matter. </br> <code>(a * b) * c = a * (b * c)</code></li>
+</ul>
+<p>Another way to see it is, given any two elements map them to another element satisfying the laws. This identification is monoid dependent.</p>
+</div>
+<div style="width: 50%;float: right;">
+<ul>
+<li>Multiple pairs could map to the same element </br> <em>Natural numbers under summation</em> </br> <span style="font-size: smaller"> <code>3 = 0 + 3 = 1 + 2 = 2 + 1 = 3 + 0</code> </span></li>
+<li>Some identifications are bound to the specific monoid. </br> <code>0 + 3 = 2 + 1</code></li>
+<li>Other identifications are necessary to satisfy the laws. </br> <code>0 + 3 = 3 + 0</code></li>
+<li>Free monoid is the monoid where the minimum amount of identifications are required to satisfy the laws.</br>      or</br> The least amount of structure required to satisfy the monoid laws.</li>
+</ul>
+</div>
+</section>
+<section id="constructing-the-free-monoid" class="level1">
+<h1>Constructing the free monoid</h1>
+<div style="width: 48%;float: left;">
+<ul>
+<li>Start with a set of generators <code>{a,b}</code></li>
+<li>monoid requires an identity element so add it to the set <code>{a,b,e}</code></li>
+<li>the possible pairs are then</br> <code>e * a</code>       <code>a * b</code></br> <code>b * e</code>       <code>b * a</code></br> <code>a * e</code></br></li>
+<li>need to identify the results of <code>e</code> pairs for monoid laws</br> <code>e * a = a</code>       <code>a * e = a</code></br> <code>b * e = b</code>       <code>e * b = b</code></br></li>
+<li>but the results of the other pairs are not important so extend the set with them </br> <code>{a, b, e, aa, bb, ab, ba}</code></li>
+<li>the new set excluding the identity element combinations have the following new pairs. </br> <code>a * aa</code>       <code>b * ab</code></br> <code>a * bb</code>       <code>b * ba</code></br> <code>a * ab</code>       <code>ab * a</code></br> <code>a * ba</code>       <code>ba * a</code></br> <code>b * aa</code>       <code>ab * b</code></br> <code>b * bb</code>       <code>ba * b</code></br></li>
+</ul>
+</div>
+<div style="width: 52%;float: right;">
+<ul>
+<li>because of associativity law we have to identify some of the new pairs as the same </br> <code>a * bb = ab * b</code>     <code>b * aa = ba * a</code> </br> <code>a * ba = ab * a</code>     <code>b * ab = ba * b</code> </br></li>
+<li>extend the set by adding all the unique pairs</br> <span style="font-size: 50%"> <code>{a, b, e, aa, bb, ab, ba, aaa, bbb, aab, aba, bba, baa, abb}</code> </span></li>
+<li>repeat infinitely building the set </br> </br> </br> </br></li>
+<li>This set is the set of lists of all the possible combinations of the original generators, where
+<ul>
+<li>identity element mean the empty list and</li>
+<li>associativity means it does not matter which order the list is built up. </br> </br> </br></li>
+</ul></li>
+<li>Basically list is the free monoid.</li>
+</ul>
+</div>
+</section>
+<section id="monoid-category" class="level1">
+<h1>Monoid Category</h1>
+<ul>
+<li>Category of monoids <code>Mon</code></li>
+<li>Objects in the category of monoids are monoids</li>
+<li>Morphisms in the category of monoids must preserve the underlying structure or must be <em>homomorphisms</em>
+<ul>
+<li>Needs to map identity <code>e₁</code> in first monoid to <code>e₂</code> in second monoid.</li>
+<li>needs to map pairs in the first monoid to pairs of mapping in the second monoid </br><code>h(a *₁ b) -&gt; h a *₂ h b</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="free-monoid-category-theoretic" class="level1">
+<h1>Free Monoid Category Theoretic</h1>
+<ul>
+<li>Free monoid relied on starting with a set of generators, but that is rooted in the <code>Set</code> category.</li>
+<li>Can’t uniquely map the category of sets to the category of monoids, because for each set there are possibly multiple monoids differing in the binary oprator</li>
+<li>Can uniquely map the category of monoids to the category of sets</li>
+<li>Functor <code>U</code> assigning every monoid to its unique underlying set <code>U :: Mon -&gt; Set</code></li>
+<li><code>U</code> is a forgetful functor because it forgets the structure in <code>Mon</code> going to <code>Set</code></li>
+</ul>
+<p><img src="../../images/free-monoid-category-theory-Mon-to-Set.svg" width="500" /></p>
+</section>
+<section id="free-monoid-category-universal-construction" class="level1">
+<h1>Free Monoid Category Universal Construction</h1>
+<div style="width: 65%;float: left;">
+<ul>
+<li>First part pick a pattern
+<ul>
+<li>For some generator set <code>x</code> in <code>Set</code> map through some function <code>p</code> to the mapping of the monoid <code>m</code> in <code>Mon</code> to the set <code>Um</code> in <code>Set</code> ,</br> <code>given x choose (m, p :: x -&gt; Um)</code></li>
+</ul></li>
+<li>Second part define a ranking between choices of your pattern
+<ul>
+<li><code>m₁</code> is better than <code>m₂</code> </br> if there is a moprhism <code>h</code> from <code>m₁</code> to <code>m₂</code> </br> and functions <code>p₁</code> from <code>x</code> to <code>Um₁</code> and <code>p₂</code> from <code>x</code> to <code>Um₂</code> </br> such that <code>U h . p₁ = p₂</code> (diagram commutes)</li>
+</ul></li>
+<li>Final step select the best one
+<ul>
+<li>according to the ranking it has to be the initial object in <code>Mon</code> since the best one will have a unique mapping to every other object in <code>Mon</code></li>
+</ul></li>
+<li>So every monoid can be derived from the free monoid by identifying extra pairs.</li>
+<li>Free monoid is the list since any other monoid can be derived by collapsing adjacent elements.</li>
+</ul>
+</div>
+<div style="width: 35%;float: right;">
+<p><img src="../../images/free-monoid-category-theory-construct.svg" width="500" /></p>
+</div>
+</section>
+<section id="question-1" class="level1">
+<h1>Question 1</h1>
+<div style="width: 60%;float: left; text-align: left;">
+<p>You might think (as I did, originally) that the requirement that a homomorphism of monoids preserve the unit is redundant. After all, we know that for all a </br> </br> <code>h a * h e = h (a * e) = h a</code> </br> </br> So <code>h</code> <code>e</code> acts like a right unit (and, by analogy, as a left unit). The problem is that <code>h</code> <code>a</code>, for all <code>a</code> might only cover a sub-monoid of the target monoid. There may be a “true” unit outside of the image of <code>h</code>. Show that an isomorphism between monoids that preserves multiplication must automatically preserve unit.</p>
+</div>
+<div style="width: 40%;float: right;">
+<p>Proof in psuedo Haskell.</p>
+<div class="sourceCode" id="cb1" style="font-size:150%"><pre class="sourceCode stretch haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">-- Given</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">  h (a₁ <span class="fu">*</span> b₁) <span class="fu">=</span> h a₁ <span class="fu">*</span> h b₁</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">-- h maps e₁ to anything</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">h (a₁ <span class="fu">*</span> e₁)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">  <span class="fu">=</span> h a₁ <span class="fu">*</span> h e₁</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">  <span class="fu">=</span> h a₁ <span class="fu">*</span> c₂</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">-- a₁ * e₁ is identity</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">h (a₁ <span class="fu">*</span> e₁)</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">  <span class="fu">=</span> h a₁</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">-- iif c₂ = e₂</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">h a₁ <span class="fu">=</span> h a₁ <span class="fu">*</span> c₂</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">-- therefore</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">h e₁ <span class="fu">=</span> e₂</a></code></pre></div>
+</div>
+</section>
+<section id="question-2" class="level1">
+<h1>Question 2</h1>
+<div style="width: 40%;float: left; text-align: left;">
+<p>Consider a monoid homomorphism from lists of integers with concatenation to integers with multiplication. </br> Assume that all singleton lists are mapped to the integers they contain, that is <code>[3]</code> is mapped to 3, etc. </br></p>
+<ul>
+<li>What is the image of the empty list <code>[]</code>? </br></li>
+<li>What’s the image of <code>[1, 2, 3, 4]</code>? </br></li>
+<li>How many different lists map to the integer 12? </br></li>
+<li>Is there any other homomorphism between the two monoids? </br></li>
+</ul>
+</div>
+<div style="width: 60%;float: right;">
+<ul>
+<li><p> </p>
+<pre class="stretch"><code> identity maps to identity
+ [] -&gt; 1
+ 1 is the identity of multiplication
+ 1 * a = a * 1 = a</code></pre></li>
+<li><p> </p>
+<pre class="stretch"><code> [1, 2, 3, 4] -&gt; 24
+ because
+ 1*(2*(3*4))
+  = 1*((2*3)*4)
+  = ((1*2)*3)*4
+  = 24</code></pre></li>
+<li><p>Double the factor pairs of 12 so 6 lists.</p>
+<pre class="stretch"><code>  [1, 12] -&gt; 12
+  [12, 1] -&gt; 12
+  [2, 6] -&gt; 12
+  [6, 2] -&gt; 12
+  [3, 4] -&gt; 12
+  [4, 3] -&gt; 12</code></pre></li>
+<li><p>No</p></li>
+</ul>
+</div>
+</section>
+<section id="question-3" class="level1">
+<h1>Question 3</h1>
+<div style="text-align: left;">
+<ul>
+<li>What is the free monoid generated by a one-element set?</li>
+<li>Can you see what it’s isomorphic to?</br></li>
+</ul>
+<hr />
+</div>
+<div>
+<div style="width: 45%;float: left; text-align: left;">
+<p>Given any 1 element set <code>{a}</code> the free monoid is <code>[()]</code> , or list of unit.</br></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode stretch haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">-- any value in a generator set gets mapped</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">-- to unit its unique since there is only one</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">-- element in the set</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="ot">p ::</span> a <span class="ot">-&gt;</span> ()</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">p _ <span class="fu">=</span> ()</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">-- `h` maps from any monoid generated from a</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">-- singleton set to list of unit</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="ot">h ::</span> <span class="dt">Monoid</span> m <span class="ot">=&gt;</span> m <span class="ot">-&gt;</span> [()]</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">-- monoid empty maps to empty list</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">h mempty <span class="fu">=</span> []</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">-- monoid binary operator maps to list concat</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12">h (a <span class="fu">&lt;&gt;</span> b) <span class="fu">=</span> <span class="fu">++</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">-- any other value maps to unit</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">h _ <span class="fu">=</span> ()</a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">-- `U` maps the monoid to its generator set</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="dt">U</span><span class="ot"> ::</span> (<span class="dt">Set</span> s, <span class="dt">Monoid</span> m) <span class="ot">=&gt;</span> m <span class="ot">-&gt;</span> s</a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="dt">U</span> <span class="fu">????</span></a></code></pre></div>
+</div>
+<div style="width: 50%;float: right; text-align: left;">
+<p>It is isomorphic to <code>Bool</code> under <code>Or</code> / <code>||</code></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode stretch haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">-- h is a homomorphism</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="ot">h ::</span> [()] <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">-- empty list maps to False which is identiy under Or</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="dt">False</span> <span class="fu">||</span> <span class="dt">True</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">  <span class="fu">=</span> <span class="dt">True</span> <span class="fu">|</span> <span class="dt">False</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">  <span class="fu">=</span> <span class="dt">True</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">h [] <span class="fu">=</span> <span class="dt">False</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">-- one element list maps to True</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">h [()] <span class="fu">=</span> <span class="dt">True</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">--- any list combined with unit list is True</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">h ([()], [])</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">  <span class="fu">=</span> h [] <span class="fu">++</span> h [()]</a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">  <span class="fu">=</span> <span class="dt">False</span> <span class="fu">||</span> <span class="dt">True</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">  <span class="fu">=</span> <span class="dt">True</span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15">  <span class="fu">=</span> h [()]</a>
+<a class="sourceLine" id="cb6-16" data-line-number="16">h ([], [()])</a>
+<a class="sourceLine" id="cb6-17" data-line-number="17">  <span class="fu">=</span> h [()] <span class="fu">++</span> h []</a>
+<a class="sourceLine" id="cb6-18" data-line-number="18">  <span class="fu">=</span> <span class="dt">True</span> <span class="fu">||</span> <span class="dt">False</span></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19">  <span class="fu">=</span> <span class="dt">True</span></a>
+<a class="sourceLine" id="cb6-20" data-line-number="20">  <span class="fu">=</span> h [()]</a>
+<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">-- List of multiple elements map to True</span></a>
+<a class="sourceLine" id="cb6-22" data-line-number="22">h [(), (), <span class="fu">...</span>]</a>
+<a class="sourceLine" id="cb6-23" data-line-number="23">  <span class="fu">=</span> h ([()] <span class="fu">++</span> [()] <span class="fu">++</span> <span class="fu">...</span>)</a>
+<a class="sourceLine" id="cb6-24" data-line-number="24">  <span class="fu">=</span> h [()] <span class="fu">++</span> h [()] <span class="fu">++</span> <span class="fu">...</span></a>
+<a class="sourceLine" id="cb6-25" data-line-number="25">  <span class="fu">=</span> <span class="dt">True</span> <span class="fu">||</span> <span class="dt">True</span> <span class="fu">||</span> <span class="fu">...</span></a>
+<a class="sourceLine" id="cb6-26" data-line-number="26">  <span class="fu">=</span> <span class="dt">True</span></a>
+<a class="sourceLine" id="cb6-27" data-line-number="27">  <span class="fu">=</span> h [()]</a></code></pre></div>
+</div>
+</div>
+</section>
+      </div>
+    </div>
+    
+
+    <script src="../../3rdParty/reveal.js/lib/js/head.min.js"></script>
+    <script src="../../3rdParty/reveal.js/js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+
+        // // The "normal" size of the presentation, aspect ratio will be preserved
+        // // when the presentation is scaled to fit different resolutions. Can be
+        // // specified using percentage units.
+        // width: 960,
+        // height: 700,
+
+        // // Factor of the display size that should remain empty around the content
+        // margin: 0.0,
+
+        // // Bounds for smallest/largest possible scale to apply to content
+        // minScale: 0.1,
+        // maxScale: 2.5,
+
+        // with sizing
+        width: 1024, height: 768, margin: 0.1, minScale: 0.1, maxScale: 3,
+
+        // no sizing
+        // width: "100%", height: "100%", margin: 0, minScale: 1, maxScale: 1,
+
+        // Display controls in the bottom right corner
+        
+        controls: true,
+        
+
+
+        // Display a presentation progress bar
+        
+        progress: true,
+        
+
+        // Set default timing of 2 minutes per slide
+        defaultTiming: 120,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: true,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autolaying embedded media (video/audio/iframe)
+        // - null: Media will only autoplay if data-autoplay is present
+        // - true: All media will autoplay, regardless of individual setting
+        // - false: No media will autoplay, regardless of individual setting
+        autoPlayMedia: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: Reveal.navigateNext,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // Hides the address bar on mobile devices
+        hideAddressBar: true,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
+
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Parallax background image
+        parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+        // Parallax background size
+        parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
+
+        // Number of pixels to move the parallax background per slide
+        // - Calculated automatically unless specified
+        // - Set to 0 to disable movement along an axis
+        parallaxBackgroundHorizontal: null,
+        parallaxBackgroundVertical: null,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: '../../3rdParty/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: '../../3rdParty/reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
