@@ -260,23 +260,27 @@ isomorphic to?</br>
 Given any 1 element set `{a}` the free monoid is `[()]` , or list of unit.</br>
 
 ```haskell
--- any value in a generator set gets mapped
--- to unit its unique since there is only one
--- element in the set
-p :: a -> ()
-p _ = ()
--- `h` maps from any monoid generated from a
--- singleton set to list of unit
-h :: Monoid m => m -> [()]
--- monoid empty maps to empty list
-h mempty = []
--- monoid binary operator maps to list concat
-h (a <> b) = ++
--- any other value maps to unit
-h _ = ()
--- `U` maps the monoid to its generator set
-U :: (Set s, Monoid m) => m -> s
-U ????
+-- p maps {a} to [()] in Set
+p :: {a} -> U [()]
+p _ = {[()], [(),()], ..}
+-- q maps {a} to some other monoid n in Set
+q :: {a} -> U n
+q a = {a,a*a,..}
+---
+h :: [()] -> n
+h [] = en
+h [()] = a
+h (():t) = h [()] *ₙ h t
+--
+Uh :: U [()] -> U n
+Uh {[()],[(),()], ..} = {h [()], h [(),()], ...}
+--
+q = Uh . p
+  = Uh . (\{a} -> {[()], [(),()], ..})
+  = (\{a} -> Uh {[()], [(),()], ..})
+  = (\{a} -> {h [()], h [(),()], ...})
+  = (\{a} -> {a, a*a, ...})
+  = q
 ```
 </div><div style="width: 50%;float: right; text-align: left;">
 It is isomorphic to `Bool` under `Or` / `||`
